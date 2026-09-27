@@ -1,0 +1,65 @@
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-width: 420px;
+  margin: 4rem auto;
+  padding: 2rem;
+  border: 1px solid var(--border, #2a2a2a);
+  border-radius: 8px;
+  background: var(--panel-bg, #181818);
+}
+
+.heading {
+  margin: 0 0 0.25rem;
+  font-size: 1.1rem;
+}
+
+.help {
+  margin: 0 0 1rem;
+  font-size: 0.85rem;
+  color: var(--muted, #888);
+}
+
+.label {
+  font-size: 0.85rem;
+  color: var(--muted, #888);
+}
+
+.input {
+  padding: 0.6rem 0.75rem;
+  font: inherit;
+  border: 1px solid var(--border, #2a2a2a);
+  border-radius: 6px;
+  background: var(--input-bg, #111);
+  color: var(--fg, #eee);
+}
+
+.button {
+  padding: 0.6rem 1rem;
+  font: inherit;
+  border: 0;
+  border-radius: 6px;
+  background: var(--accent, #4a8df0);
+  color: white;
+  cursor: pointer;
+}
+
+.button:hover {
+  background: var(--accent-hover, #5a9dff);
+}
+
+.cancelButton {
+  padding: 0.6rem 1rem;
+  font: inherit;
+  border: 1px solid var(--border, #2a2a2a);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--muted, #888);
+  cursor: pointer;
+}
+
+.cancelButton:hover {
+  color: var(--fg, #eee);
+  border-color: #555;
+}

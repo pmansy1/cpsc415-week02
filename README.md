@@ -1,45 +1,35 @@
-# Artifact-chain template
+# Chat Client
 
-Starting point for major project submissions in CPSC 415 (AI Integration, Trinity College). Click **Use this template** on GitHub to create your own repository from it. Do not fork.
+A simple local web chat app built with React that lets you chat with different AI models through OpenRouter.
 
-The course follows Anthropic's [AI-Native SDLC Playbook](https://claude.com/blog/the-ai-native-sdlc-playbook): every stage of the work leaves a short, version-controlled artifact. The agent writes most of the code. You decide what gets built, steer, verify, and explain every choice. These files are how you prove you understood what the agent built.
+## What the program does and how to run it
+- It lets you select an AI model, stream responses in real-time, save your chats in your browser, and see the token count and dollar cost for each reply.
+- **How to run it**:
+  ```bash
+  cd chat-client
+  npm install
+  npm run dev
+  ```
+  Then open `http://localhost:5173` in your browser and paste your OpenRouter API key when prompted.
+- **Environment variables**: You can set `OPENROUTER_API_KEY` in your terminal before running the app to pre-fill your key, or you can just paste it directly into the web UI.
 
-## Early labs
+## Two things corrected in the intent draft and why
+- **Using IndexedDB instead of localStorage for chats**: The draft wasn't sure where to save chat history, but localStorage only holds about 5MB and would run out of room quickly. IndexedDB gives us way more space so long chats don't crash or slow down the browser.
+- **Using plain fetch instead of a backend server or the OpenAI package**: We originally thought we might need a Node proxy server to avoid CORS issues, but OpenRouter allows direct browser calls. Using standard browser `fetch` kept the app simple and was much easier to write tests for than the heavy OpenAI library.
 
-Week 1 uses the minimal repository described in the course handout. Later introductory labs complete only the stages assigned so far. This template describes the full chain for team projects and the final portfolio; it does not require unintroduced artifacts in Week 1. Project languages are chosen and justified, with one separate guided exercise in an unfamiliar language.
+## One line of code explained
+- **Where the usage/cost is read** ([`chat-client/src/openrouter/client.ts`](./chat-client/src/openrouter/client.ts), line 188):
+  ```typescript
+  costUsd: c.usage.cost ?? 0,
+  ```
+  - This line pulls the dollar cost that OpenRouter returns in the final stream chunk so the app can display how much the response cost right under the assistant's message.
 
-## The chain
+## Two models compared
+- **Models tested**: `openai/gpt-4o-mini` and `minimax/minimax-m3` on the prompt *"What is 25 * 14? Explain in one sentence."*
+- **How the answers differed**: GPT-4o-mini gave a plain, straightforward answer with a formula definition, whereas MiniMax broke down the mental math steps (25 × 10 + 25 × 4 = 350) before answering.
+- **Observed cost**:
+  - `openai/gpt-4o-mini`: **$0.000018** (46 tokens total).
+  - `minimax/minimax-m3`: **$0.00034** (285 tokens total; it cost more because it generated hidden reasoning tokens first).
 
-| Stage | File | Written by | Approved by |
-|---|---|---|---|
-| Plan | `intent/<name>.md` | The agent, after interviewing you | You |
-| Design | `spec.md` | The agent, from the approved intent | You, against the intent |
-| Build | `plan.md`, then code on a branch | The agent | You, before any code |
-| Test | tests, lint, CI | The agent | You confirm the loop actually ran |
-| Deploy | a pull request reviewed against `REVIEW.md` | A separate reviewing agent | You merge |
-| Maintain | a new `intent/<name>.md` | Triggered by a bug, a ticket, or a model change | You triage |
-
-`CLAUDE.md` and `REVIEW.md` travel with the repo and are graded artifacts.
-
-## Rules that are graded
-
-- Intent and spec exist before code. Plan is approved before implementation. The commit history shows it.
-- One pull request per feature, from a branch, reviewed before merge. Do not commit to `main` directly after the first commit.
-- `spec.md` states the **language** and the **model** for each component and why.
-- `ANNOTATION.md` answers the four questions for the finished project.
-- No secrets in the repo. `.claude/settings.local.json` and `.env` are ignored; the `.example` file shows the shape.
-
-## Submitting
-
-Tag the commit you are submitting and put the repository URL plus the tag on Moodle:
-
-```
-git tag tp1-submitted
-git push origin tp1-submitted
-```
-
-Tags the course uses: `intent-spec`, `tp1-submitted`, `tp2-submitted`, `portfolio-final`.
-
-## Running the agent
-
-Copy `.claude/settings.local.json.example` to `.claude/settings.local.json` and fill in your OpenRouter key and model slugs, or use the `orclaude` launcher from the [course repository](https://github.com/kousen/ai-integration-course/tree/main/scripts).
+## Local model
+- I did not test a local model because Ollama was not installed on my machine. A local model would run for free ($0.00) without needing Wi-Fi, but it wouldn't report OpenRouter cost stats and would run slower depending on computer hardware.
