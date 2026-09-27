@@ -1,0 +1,51 @@
+.composer {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.5rem;
+  padding: 1rem;
+  border-top: 1px solid var(--border, #2a2a2a);
+  background: var(--composer-bg, #141414);
+}
+
+.label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}
+
+.textarea {
+  grid-column: 1 / 2;
+  padding: 0.6rem 0.75rem;
+  font: inherit;
+  border: 1px solid var(--border, #2a2a2a);
+  border-radius: 6px;
+  background: var(--input-bg, #111);
+  color: var(--fg, #eee);
+  resize: vertical;
+  min-height: 3.5rem;
+}
+
+.textarea:disabled {
+  opacity: 0.6;
+}
+
+.sendButton {
+  grid-column: 2 / 3;
+  align-self: end;
+  padding: 0.6rem 1.25rem;
+  font: inherit;
+  border: 0;
+  border-radius: 6px;
+  background: var(--accent, #4a8df0);
+  color: white;
+  cursor: pointer;
+}
+
+.sendButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

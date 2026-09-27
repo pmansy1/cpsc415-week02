@@ -1,0 +1,30 @@
+.banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.6rem 1rem;
+  border: 1px solid var(--error, #c44545);
+  border-radius: 6px;
+  background: rgba(196, 69, 69, 0.15);
+  color: var(--fg, #eee);
+  margin: 0.5rem 1.5rem 0;
+}
+
+.message {
+  font-size: 0.85rem;
+}
+
+.retry {
+  padding: 0.3rem 0.75rem;
+  font: inherit;
+  border: 1px solid var(--error, #c44545);
+  border-radius: 4px;
+  background: transparent;
+  color: var(--fg, #eee);
+  cursor: pointer;
+}
+
+.retry:hover {
+  background: rgba(196, 69, 69, 0.25);
+}
