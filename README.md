@@ -32,4 +32,4 @@ A simple local web chat app built with React that lets you chat with different A
   - `minimax/minimax-m3`: **$0.00034** (285 tokens total; it cost more because it generated hidden reasoning tokens first).
 
 ## Local model
-- I did not test a local model because Ollama was not installed on my machine. A local model would run for free ($0.00) without needing Wi-Fi, but it wouldn't report OpenRouter cost stats and would run slower depending on computer hardware.
+- I did not test a local model
