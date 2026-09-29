@@ -1,35 +1,36 @@
 # Chat Client
 
-A simple local web chat app built with React that lets you chat with different AI models through OpenRouter.
+A simple Python CLI script that asks a question to an AI model through OpenRouter using just Python's standard library.
 
-## What the program does and how to run it
-- It lets you select an AI model, stream responses in real-time, save your chats in your browser, and see the token count and dollar cost for each reply.
-- **How to run it**:
+## What it does and how to run it
+- It takes a question in the terminal, sends it to OpenRouter, prints the answer, and prints the token counts at the end.
+- **Environment variables**:
+  - `OPENROUTER_API_KEY`: your OpenRouter key
+  - `CHAT_MODEL`: model name (defaults to `openai/gpt-4o-mini`)
+  - `CHAT_BASE_URL`: API URL (defaults to `https://openrouter.ai/api/v1`)
+- **How to run**:
   ```bash
-  cd chat-client
-  npm install
-  npm run dev
+  export OPENROUTER_API_KEY="your-key-here"
+  python3 chat.py "In one sentence, what is a context window?"
   ```
-  Then open `http://localhost:5173` in your browser and paste your OpenRouter API key when prompted.
-- **Environment variables**: You can set `OPENROUTER_API_KEY` in your terminal before running the app to pre-fill your key, or you can just paste it directly into the web UI.
 
-## Two things corrected in the intent draft and why
-- **Using IndexedDB instead of localStorage for chats**: The draft wasn't sure where to save chat history, but localStorage only holds about 5MB and would run out of room quickly. IndexedDB gives us way more space so long chats don't crash or slow down the browser.
-- **Using plain fetch instead of a backend server or the OpenAI package**: We originally thought we might need a Node proxy server to avoid CORS issues, but OpenRouter allows direct browser calls. Using standard browser `fetch` kept the app simple and was much easier to write tests for than the heavy OpenAI library.
+## Two things I corrected in the intent draft
+- **Using a Python CLI instead of a React app**: The AI initially tried to build a React web app using npm packages. I fixed it to a simple Python script using only the standard library (`urllib.request`) like the lab asked.
+- **Reading the API key from environment variables**: The AI wanted to save the key to a file. I changed it to read from `OPENROUTER_API_KEY` in the environment so no secrets get committed to GitHub.
 
 ## One line of code explained
-- **Where the usage/cost is read** ([`chat-client/src/openrouter/client.ts`](./chat-client/src/openrouter/client.ts), line 188):
-  ```typescript
-  costUsd: c.usage.cost ?? 0,
+- **Where usage is read** ([`chat.py`](./chat.py), line 96):
+  ```python
+  usage = response_json.get("usage", {})
   ```
-  - This line pulls the dollar cost that OpenRouter returns in the final stream chunk so the app can display how much the response cost right under the assistant's message.
+  - This grabs the `usage` dictionary from the API response so I can grab and print the prompt, completion, and total token counts.
 
 ## Two models compared
-- **Models tested**: `openai/gpt-4o-mini` and `minimax/minimax-m3` on the prompt *"What is 25 * 14? Explain in one sentence."*
-- **How the answers differed**: GPT-4o-mini gave a plain, straightforward answer with a formula definition, whereas MiniMax broke down the mental math steps (25 × 10 + 25 × 4 = 350) before answering.
-- **Observed cost**:
-  - `openai/gpt-4o-mini`: **$0.000018** (46 tokens total).
-  - `minimax/minimax-m3`: **$0.00034** (285 tokens total; it cost more because it generated hidden reasoning tokens first).
+- **Models**: `openai/gpt-4o-mini` vs `minimax/minimax-m3` on the prompt *"In one sentence, what is a context window?"*
+- **Difference in answer**: GPT-4o-mini gave a simple definition of what a context window is, while MiniMax focused on it being the hard limit on total input and output tokens.
+- **Observed costs (from OpenRouter Activity)**:
+  - `openai/gpt-4o-mini`: **$0.000029** (27 prompt, 42 completion, 69 total tokens)
+  - `minimax/minimax-m3`: **$0.000318** (186 prompt, 77 completion, 263 total tokens; cost more because of reasoning tokens)
 
 ## Local model
-- I did not test a local model
+- I didn't test a local model because I don't have Ollama installed on my laptop. A local model would be free ($0.00) and work offline, but it wouldn't show up on OpenRouter's activity page.

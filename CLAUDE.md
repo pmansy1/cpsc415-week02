@@ -21,10 +21,9 @@ One paragraph. Link to the current `spec.md`.
 
 ## Working rules
 
-For an introductory lab, follow its explicitly assigned stages; the full chain below applies to major projects. Week 1 uses its own minimal repository.
-
-- Write or update `intent/` and `spec.md` before code. Get `plan.md` approved before implementing.
-- One feature per branch and pull request. Never push to `main` directly.
+- This is the Week 2 introductory lab. Only the intent stage is assigned:
+  no spec.md, no plan.md, no branches or pull requests. Commit to main.
+- Standard library only. No packages, no pip install, no Maven or Gradle.
 - Never commit `.env` or `.claude/settings.local.json`.
 
 ## Common mistakes
